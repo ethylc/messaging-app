@@ -1,4 +1,4 @@
-const SignupStyle = theme => ({
+const signupStyle = theme => ({
     main: {
       width: 'auto',
       display: 'block',
@@ -11,6 +11,7 @@ const SignupStyle = theme => ({
       },
     },
     paper: {
+      backgroundColor: 'rgba(255,255,255,0.8)',
       marginTop: theme.spacing(17),
       display: 'flex',
       flexDirection: 'column',
@@ -45,4 +46,4 @@ const SignupStyle = theme => ({
     }
   });
   
-  export default SignupStyle;
+  export default signupStyle;

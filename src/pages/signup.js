@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { Button, FormControl, InputLabel, Input, Paper, 
     withStyles, CssBaseline, Typography} from '@material-ui/core';
-import SignupStyle from '../styles/signup';
+import signupStyle from '../styles/signup';
 import {ErrorOutlineOutlined} from '@material-ui/icons';
 const firebase = require("firebase");
 
@@ -86,4 +86,4 @@ class Signup extends React.Component{
     }
 }
 
-export default withStyles(SignupStyle)(Signup);
+export default withStyles(signupStyle)(Signup);

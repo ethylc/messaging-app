@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { Button, FormControl, InputLabel, Input, Paper, 
     withStyles, CssBaseline, Typography} from '@material-ui/core';
-import LoginStyle from '../styles/login';
+import loginStyle from '../styles/login';
 import {ErrorOutlineOutlined} from '@material-ui/icons';
 const firebase = require("firebase");
 
@@ -56,4 +56,4 @@ class Login extends React.Component{
     }
 }
 
-export default withStyles(LoginStyle)(Login);
+export default withStyles(loginStyle)(Login);
