@@ -10,7 +10,7 @@ class Signup extends React.Component{
     constructor(){
         super();
         this.state = {
-            name: null,
+            displayName: null,
             email: null,
             password: null,
             passwordConfirm: null,
@@ -30,14 +30,26 @@ class Signup extends React.Component{
                 .then(authRes => {
                     const user = {
                         email: authRes.user.email,
-                        name: this.state.name
+                        name: authRes.user.displayName
                     };
                     firebase.firestore()
                             .collection('users')
                             .doc(this.state.email)
                             .set(user)
                             .then(() => {
-                                this.props.history.push('/dashboard')
+                                firebase.auth().currentUser.updateProfile({
+                                    displayName: this.state.displayName
+                                }).then(() => {
+                                    firebase.firestore()
+                                            .collection('users')
+                                            .doc(this.state.email)
+                                            .update({
+                                                name:authRes.user.displayName
+                                            })
+                                    this.props.history.push('/dashboard')
+                                },pfErr => {
+                                    this.setState({error: pfErr.message})
+                                });
                             }, dbErr => {
                                 this.setState({error: dbErr.message})
                             })
@@ -61,7 +73,7 @@ class Signup extends React.Component{
                     <form className = {classes.form} onSubmit={(e) => this.submitSignup(e)}>
                         <FormControl required fullWidth margin='normal'>
                             <InputLabel htmlFor = 'signup-name' color = 'secondary'>Enter Username</InputLabel>
-                            <Input color = 'secondary' onChange={(e) => this.userInput('name', e)} autoFocus id = 'signup-name'/>
+                            <Input color = 'secondary' onChange={(e) => this.userInput('displayName', e)} autoFocus id = 'signup-name'/>
                         </FormControl>
                         <FormControl required fullWidth margin='normal'>
                             <InputLabel htmlFor = 'signup-email' color = 'secondary'>Enter Email</InputLabel>

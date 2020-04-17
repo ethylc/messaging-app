@@ -1,7 +1,10 @@
 import React from 'react';
-import ChatList from '../components/chatList'
-import ChatBox from '../components/chatBox'
-const firebase = require("firebase")
+import ChatList from '../components/ChatList';
+import ChatBox from '../components/ChatBox';
+import TextBar from '../components/TextBar';
+import NewChat from '../components/NewChat';
+import moment from 'moment';
+const firebase = require("firebase");
 
 class Dashboard extends React.Component{
     constructor(){
@@ -9,12 +12,14 @@ class Dashboard extends React.Component{
         this.state = {
             selectedChat: null,
             addChat: false,
+            prevAdd: null,
             email: null,
             name: null,
-            chats:[]
-        }
+            chats:[],
+            names:[]
+        };
     }
-    componentDidMount = () =>{
+    componentDidMount = () => {
         firebase.auth().onAuthStateChanged(async user => {
             if (!user){
                 this.props.history.push('/login');
@@ -26,20 +31,72 @@ class Dashboard extends React.Component{
                                   const chats = res.docs.map(chat => chat.data());
                                   await this.setState({
                                       email: user.email,
+                                      name: user.displayName,
                                       chats: chats
                                   });
-                                  console.log(this.state)
                               })
             }
         })
-
     }
     newChatButton = () => {
-        this.setState({addChat: true, selectChat: null});
+        this.setState({addChat: true, selectedChat: null, prevAdd: 'yes'});
     }
-    selectChat = (chatIndex) => {
-        console.log('index',chatIndex)
-        this.setState({selectedChat: chatIndex})
+    selectChat = async (chatIndex) => {
+        await this.setState({selectedChat: chatIndex, addChat: false, prevAdd: 'no'});
+        this.receiverReadMsg();
+    }
+    buildDocKey = (friend) => [this.state.email, friend].sort().join(':');
+    
+    send = (msg) => {
+        const docKey = this.buildDocKey(this.state.chats[this.state.selectedChat].users.filter(usr => usr !== this.state.email)[0]);
+        firebase.firestore()
+                .collection('chats')
+                .doc(docKey)
+                .update({
+                    messages: firebase.firestore.FieldValue.arrayUnion({
+                        sender: this.state.email,
+                        message: msg,
+                        time: moment().format("MMM DD YYYY [at] HH:mm")
+                    }),
+                    hasRead: false,
+                });
+    }
+
+    receiverClickMsg = (index) => this.state.chats[index].messages[this.state.chats[index].messages.length - 1].sender !== this.state.email;
+    receiverReadMsg = () => {
+        const docKey = this.buildDocKey(this.state.chats[this.state.selectedChat].users.filter(user => user !== this.state.email)[0]);
+        if (this.receiverClickMsg(this.state.selectedChat)){
+            firebase.firestore()
+                    .collection('chats')
+                    .doc(docKey)
+                    .update({
+                        hasRead: true,
+                    })
+        }
+    }
+    goToChat = async (key, msg) => {
+        const chatUsers = key.split(':');
+        const chat = this.state.chats.find(chat => chatUsers.every(user => chat.users.includes(user)));
+        this.setState({addChat:true});
+        await this.selectChat(this.state.chats.indexOf(chat));
+        this.send(msg);
+    }
+    createChat = async(chat) => {
+        const key = this.buildDocKey(chat.sendTo);
+        await firebase.firestore()
+                    .collection('chats')
+                    .doc(key)
+                    .set({
+                        hasRead: false,
+                        users:[this.state.email, chat.sendTo],
+                        messages:[{
+                            message: chat.message,
+                            sender: this.state.email,
+                            time: moment().format("MMM DD YYYY [at] HH:mm")
+                        }]
+                    })
+        this.setState({addChat:false});
+        this.selectChat(this.state.chats.length - 1);
     }
     render(){
         return(
@@ -50,10 +107,11 @@ class Dashboard extends React.Component{
                 chats = {this.state.chats} 
                 userEmail = {this.state.email} 
                 userName = {this.state.name}
-                chatIndex = {this.selectedChat}>
+                chatIndex = {this.state.selectedChat}>
                 </ChatList>
-                {this.state.addChat ? null : 
-                <ChatBox user = {this.state.email} chat = {this.state.chats[this.state.selectedChat]}></ChatBox>}
+                {this.state.addChat ? <NewChat goTo = {this.goToChat} addChat = {this.createChat}></NewChat> : 
+                <ChatBox user = {this.state.email} add = {this.state.prevAdd} chat = {this.state.chats[this.state.selectedChat]}></ChatBox>}
+                {this.state.selectedChat !== null && !this.state.addChat ? <TextBar new = {this.state.addChat} send = {this.send} read = {this.receiverReadMsg}></TextBar> : null}
             </div>
         );
     }

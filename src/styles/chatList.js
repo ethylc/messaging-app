@@ -5,7 +5,7 @@ const chatListStyle = theme => ({
       position: 'absolute',
       left: '0',
       width: '300px',
-      boxShadow: '0px 0px 2px grey'
+      boxShadow: '0px 0px 2px #303030'
     },
     listItem: {
       cursor: 'pointer'
