@@ -15,29 +15,37 @@ const chatBoxStyle = theme => ({
       height: 'calc(100% - 120px)',
       overflow: 'auto',
       padding: '25px',
-      marginLeft: '300px',
+      left: '300px',
       boxSizing: 'border-box',
       top: '60px',
       width: 'calc(100% - 300px)',
       position: 'absolute',
-      backgroundColor:'rgba(255, 255, 255, 0.2)'
+      backgroundColor:'rgba(255, 255, 255, 0.2)',
+      [theme.breakpoints.down('sm')]: {
+        width: 'calc(100% - 70px)',
+        left: '70px',
+      },
     },
     contentNoChat: {
       height: '100%',
       overflow: 'auto',
       padding: '25px',
-      marginLeft: '300px',
+      left: '300px',
       boxSizing: 'border-box',
       width: 'calc(100% - 300px)',
       position: 'absolute',
       color:'white',
-      backgroundColor:'rgba(255, 255, 255, 0.2)'
+      backgroundColor:'rgba(255, 255, 255, 0.2)',
+      [theme.breakpoints.down('sm')]: {
+        width: 'calc(100% - 70px)',
+        left: '70px',
+      },
     },
   
     friendSent: {
       float: 'left',
       clear: 'both',
-      padding: '20px',
+      padding: '12px',
       boxSizing: 'border-box',
       wordWrap: 'break-word',
       marginTop: '10px',
@@ -45,13 +53,31 @@ const chatBoxStyle = theme => ({
       color: 'black',
       width: 'auto',
       maxWidth:'500px',
-      borderRadius: '10px'
+      borderRadius: '15px',
+      position:'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        left: '0',
+        top: '50%',
+        width: '0',
+        height: '0',
+        border: '11px solid transparent',
+        borderRightColor: 'rgba(255, 255, 255, 0.5)',
+        borderLeft: '0',
+        borderTop: '0',
+        marginTop: '-5.5px',
+        marginLeft: '-10.9px',
+      },
+      '& img':{
+        width:'100%'
+      }
     },
-  
+
     userSent: {
       float: 'right',
       clear: 'both',
-      padding: '20px',
+      padding: '12px',
       boxSizing: 'border-box',
       wordWrap: 'break-word',
       marginTop: '10px',
@@ -59,7 +85,28 @@ const chatBoxStyle = theme => ({
       color: 'white',
       width: 'auto',
       maxWidth:'500px',
-      borderRadius: '10px'
+      borderRadius: '15px',
+      position:'relative',
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        right: '0',
+        top: '50%',
+        width: '0',
+        height: '0',
+        border: '11px solid transparent',
+        borderLeftColor: 'rgba(0, 0, 0, 0.5)',
+        borderRight: '0',
+        borderBottom: '0',
+        marginTop: '-5.5px',
+        marginRight: '-10.9px',
+      },
+      '& a':{
+        color:'white'
+      },
+      '& img':{
+        width:'100%'
+      }
     },
   
     chatHeader: {
@@ -67,7 +114,7 @@ const chatBoxStyle = theme => ({
       height: '60px',
       backgroundColor: 'rgba(255,255,255,0.3)',
       position: 'fixed',
-      marginLeft: '300px',
+      left: '300px',
       fontSize: '18px',
       textAlign: 'left',
       color: 'white',
@@ -76,7 +123,11 @@ const chatBoxStyle = theme => ({
       boxShadow: '0 2px 2px -2px #303030',
       zIndex:'9',
       display:'flex',
-      cursor:'default'
+      cursor:'default',
+      [theme.breakpoints.down('sm')]: {
+        width: 'calc(100% - 70px)',
+        left: '70px',
+      },
     },
     icon:{
       marginTop:'-6px',

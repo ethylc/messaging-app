@@ -8,7 +8,7 @@ class ChatBox extends React.Component{
         super();
         this.state = {
             name: null,
-            inital: null
+            inital: null,
         }
     }
     componentDidMount = () =>{
@@ -41,11 +41,41 @@ class ChatBox extends React.Component{
                     console.log("Error getting document:", error);
                 });
     }
+    contentType = (string) => {
+        try {
+            if (new URL(string)){
+                if ((string.match(/\.(jpg|png|gif)/g))){
+                    return 'image';
+                } else {
+                    return 'url';
+                }
+            }
+        } catch {
+            return 'string';
+        }
+    }
+    
+    messageDisplay = (message) => {
+        const type = this.contentType(message)
+        //console.log({ type, message })
+        switch (type){
+            case 'image':
+                return <img src={message} alt = {message}/>
+            case 'url':
+                return <a href = {message} target = "_blank" rel = "noopener noreferrer">{message}</a>
+            default:
+            case 'string':
+                return message
+        }
+    }
+
     render(){
         const {classes} = this.props;
         if (this.props.chat === undefined){
-        return (<main id = 'chat-container' className = {classes.contentNoChat}><Typography component = 'h1' variant ='h5'>
-            Welcome {this.props.name}</Typography></main>);
+            return (
+                <main id = 'chat-container' className = {classes.contentNoChat}><Typography component = 'h1' variant = 'h5'>
+                Welcome {this.props.name}</Typography></main>
+            );
         } else {
             return(
                 <div>
@@ -55,9 +85,11 @@ class ChatBox extends React.Component{
                     <main id = 'chat-container' className = {classes.content}>
                         {this.props.chat.messages.map((msg, index) => {
                             return(
-                                <Tooltip title = {msg.time} placement={msg.sender === this.props.user ? "left" : "right"}>
+                                <Tooltip key = {index} title = {msg.time} placement = {msg.sender === this.props.user ? "left" : "right"}>
                                     <div key = {index} className = {msg.sender === this.props.user ? classes.userSent : classes.friendSent}>
-                                    {msg.message}
+                                        
+                                    {this.contentType(msg.message) === 'string' ? msg.message : this.contentType(msg.message) === 'image' ? 
+                                    <img src={msg.message} alt = {msg.message}/> : <a href = {msg.message} target = "_blank" rel = "noopener noreferrer">{msg.message}</a>}
                                 </div></Tooltip>
                             )
                         }

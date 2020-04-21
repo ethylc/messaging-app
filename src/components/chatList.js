@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, List, ListItem, ListItemText, ListItemAvatar, Avatar, 
-    withStyles, Typography, Divider, ListItemIcon, Tooltip} from '@material-ui/core';
-import {NotificationsActive, CreateTwoTone, ExitToAppTwoTone} from '@material-ui/icons';
+    withStyles, Typography, Divider, Tooltip, Badge} from '@material-ui/core';
+import {CreateTwoTone, ExitToAppTwoTone, Mail} from '@material-ui/icons';
 import chatListStyle from '../styles/chatList';
 const firebase = require("firebase");
 
@@ -37,7 +37,7 @@ class ChatList extends React.Component{
         const {classes} = this.props;
         return(
             <main className = {classes.root}>
-                <Typography component = 'h1' variant = 'h4' display ='inline'>Chats</Typography>
+                {/* <Typography component = 'h1' variant = 'h4' display ='inline'>Chats</Typography> */}
                 <Tooltip title="Create new chat"><IconButton aria-label = 'create new chat' color = 'secondary' onClick = {this.newChat}><CreateTwoTone/></IconButton></Tooltip>
                 <Tooltip title="Logout"><IconButton aria-label = 'logout' color = 'secondary' onClick = {this.logOut}><ExitToAppTwoTone/></IconButton></Tooltip>
                 {this.props.chats.length > 0 ? 
@@ -50,15 +50,19 @@ class ChatList extends React.Component{
                                     className = {classes.listItem} selected = {this.props.chatIndex === index}
                                     alignItems = 'flex-start'>
                                         <ListItemAvatar>
-                                            <Avatar>{chat.users.filter(user => user !== this.props.userEmail)[0].split('')[0]}</Avatar>
+                                        <Badge overlap = "circle"
+                                        anchorOrigin={{vertical: 'bottom', horizontal: 'right',}}
+                                        badgeContent={chat.hasRead === false && !this.userSender(chat) ? <Mail fontSize = 'small' color='action'/>: null}>
+                                            <Avatar>{chat.users.filter(user => user !== this.props.userEmail)[0].split('')[0]}</Avatar></Badge>
                                         </ListItemAvatar>
-                                        <ListItemText primary = {chat.users.filter(user => user !== this.props.userEmail)[0]}
-                                        secondary = {<React.Fragment><Typography component = 'span' color = 'textSecondary'>
-                                            {chat.messages[chat.messages.length - 1].message.substring(0, 30)}
+                                        <ListItemText className = {classes.itemText} primary = {chat.users.filter(user => user !== this.props.userEmail)[0]}
+                                        secondary = {<React.Fragment><Typography className = {classes.text} component = 'span' variant = 'caption' color = 'textSecondary'>
+                                            {chat.messages[chat.messages.length - 1].message.substring(0, 50)}
+                                            {/* {chat.messages[chat.messages.length - 1].time} */}
                                             </Typography></React.Fragment>}>
 
                                         </ListItemText>
-                                        {chat.hasRead === false && !this.userSender(chat) ? <ListItemIcon><NotificationsActive/></ListItemIcon> : null}
+                                        {/* {chat.hasRead === false && !this.userSender(chat) ? <ListItemIcon><NotificationsActive/></ListItemIcon> : null} */}
                                     </ListItem>
                                     <Divider></Divider>
                                 </div>

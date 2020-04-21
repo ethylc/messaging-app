@@ -63,7 +63,7 @@ class NewChat extends React.Component{
             <main className = {classes.main}>
                 <div className = {classes.chatHeader}>
                 <TextField className = {classes.textBar} id = 'chat-username'
-                rowsMax={1} placeholder="Type the username of friend" color = 'secondary'
+                rowsMax={1} placeholder="Type the email of friend" color = 'secondary'
                 onChange={(e) => this.userInput('username', e)} InputProps={{ disableUnderline: true }}></TextField>
                     </div>
                 <TextBar send = {this.userMessage} new = {this.state.addChat}></TextBar>

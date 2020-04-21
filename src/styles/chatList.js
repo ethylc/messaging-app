@@ -5,10 +5,15 @@ const chatListStyle = theme => ({
       position: 'absolute',
       left: '0',
       width: '300px',
-      boxShadow: '0px 0px 2px #303030'
+      boxShadow: '0px 0px 2px #303030',
+      overflowX:'hidden',
+      overflowY:'auto',
+      [theme.breakpoints.down('sm')]: {
+        width: '70px',
+      },
     },
     listItem: {
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
     titleHeader:{
       marginTop:'20px'
@@ -18,6 +23,14 @@ const chatListStyle = theme => ({
       position: 'absolute',
       top: '0',
       right: '5px'
+    },
+    itemText:{
+      whiteSpace: 'nowrap',
+      maxHeight: '45px',
+      overflow: 'hidden',
+    },
+    text:{
+      textOverflow: 'ellipsis'
     }
   });
   

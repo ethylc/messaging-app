@@ -56,7 +56,7 @@ class Dashboard extends React.Component{
                     messages: firebase.firestore.FieldValue.arrayUnion({
                         sender: this.state.email,
                         message: msg,
-                        time: moment().format("MMM DD YYYY [at] HH:mm")
+                        time: moment().format("MMM DD YYYY [at] LT")
                     }),
                     hasRead: false,
                 });
@@ -92,26 +92,22 @@ class Dashboard extends React.Component{
                         messages:[{
                             message: chat.message,
                             sender: this.state.email,
-                            time: moment().format("MMM DD YYYY [at] HH:mm")
+                            time: moment().format("MMM DD YYYY [at] LT")
                         }]
                     })
         this.setState({addChat:false});
-        this.selectChat(this.state.chats.length - 1);
+        const chatUsers = key.split(':');
+        const index = this.state.chats.find(chat => chatUsers.every(user => chat.users.includes(user)));
+        this.selectChat(this.state.chats.indexOf(index));
     }
     render(){
         return(
             <div>
-                <ChatList history = {this.props.history} 
-                newChatClick = {this.newChatButton} 
-                selectChat = {this.selectChat} 
-                chats = {this.state.chats} 
-                userEmail = {this.state.email} 
-                userName = {this.state.name}
-                chatIndex = {this.state.selectedChat}>
-                </ChatList>
-                {this.state.addChat ? <NewChat goTo = {this.goToChat} addChat = {this.createChat}></NewChat> : 
-                <ChatBox user = {this.state.email} add = {this.state.prevAdd} chat = {this.state.chats[this.state.selectedChat]}></ChatBox>}
-                {this.state.selectedChat !== null && !this.state.addChat ? <TextBar new = {this.state.addChat} send = {this.send} read = {this.receiverReadMsg}></TextBar> : null}
+                <ChatList history = {this.props.history} newChatClick = {this.newChatButton} selectChat = {this.selectChat} 
+                chats = {this.state.chats} userEmail = {this.state.email} chatIndex = {this.state.selectedChat}/>
+                {this.state.addChat ? <NewChat goTo = {this.goToChat} addChat = {this.createChat}/> : 
+                <ChatBox user = {this.state.email} name = {this.state.name} chat = {this.state.chats[this.state.selectedChat]}/>}
+                {this.state.selectedChat !== null && !this.state.addChat ? <TextBar new = {this.state.addChat} send = {this.send} read = {this.receiverReadMsg}/> : null}
             </div>
         );
     }
