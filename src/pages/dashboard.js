@@ -3,6 +3,7 @@ import ChatList from '../components/ChatList';
 import ChatBox from '../components/ChatBox';
 import TextBar from '../components/TextBar';
 import NewChat from '../components/NewChat';
+import Settings from '../components/Settings';
 import moment from 'moment';
 const firebase = require("firebase");
 
@@ -12,9 +13,10 @@ class Dashboard extends React.Component{
         this.state = {
             selectedChat: null,
             addChat: false,
-            prevAdd: null,
+            settings: false,
             email: null,
             name: null,
+            initial: null,
             chats:[],
             names:[]
         };
@@ -32,6 +34,7 @@ class Dashboard extends React.Component{
                                   await this.setState({
                                       email: user.email,
                                       name: user.displayName,
+                                      initial: user.displayName.split('')[0],
                                       chats: chats
                                   });
                               })
@@ -39,10 +42,13 @@ class Dashboard extends React.Component{
         })
     }
     newChatButton = () => {
-        this.setState({addChat: true, selectedChat: null, prevAdd: 'yes'});
+        this.setState({addChat: true, selectedChat: null, settings: false});
+    }
+    settingsButton = () => {
+        this.setState({addChat: false, selectedChat: null, settings: true});
     }
     selectChat = async (chatIndex) => {
-        await this.setState({selectedChat: chatIndex, addChat: false, prevAdd: 'no'});
+        await this.setState({selectedChat: chatIndex, addChat: false, settings: false});
         this.receiverReadMsg();
     }
     buildDocKey = (friend) => [this.state.email, friend].sort().join(':');
@@ -100,13 +106,23 @@ class Dashboard extends React.Component{
         const index = this.state.chats.find(chat => chatUsers.every(user => chat.users.includes(user)));
         this.selectChat(this.state.chats.indexOf(index));
     }
+
+    userInput = (e) =>{
+        this.setState({name: e.target.value});
+    }
+    updateProfile = (e) => {
+        e.preventDefault();
+        alert(this.state.name)
+    }
     render(){
         return(
             <div>
                 <ChatList history = {this.props.history} newChatClick = {this.newChatButton} selectChat = {this.selectChat} 
-                chats = {this.state.chats} userEmail = {this.state.email} chatIndex = {this.state.selectedChat}/>
-                {this.state.addChat ? <NewChat goTo = {this.goToChat} addChat = {this.createChat}/> : 
-                <ChatBox user = {this.state.email} name = {this.state.name} chat = {this.state.chats[this.state.selectedChat]}/>}
+                chats = {this.state.chats} userEmail = {this.state.email} chatIndex = {this.state.selectedChat} settings = {this.settingsButton}/>
+                {this.state.addChat ? <NewChat goTo = {this.goToChat} addChat = {this.createChat}/> : this.state.settings ?
+                <Settings name = {this.state.name} initial = {this.state.initial} nameChange = {this.userInput} update = {this.updateProfile}/> :
+                <ChatBox user = {this.state.email} name = {this.state.name} initial = {this.state.initial} nameChange = {this.userInput} 
+                chat = {this.state.chats[this.state.selectedChat]} update = {this.updateProfile}/>}
                 {this.state.selectedChat !== null && !this.state.addChat ? <TextBar new = {this.state.addChat} send = {this.send} read = {this.receiverReadMsg}/> : null}
             </div>
         );

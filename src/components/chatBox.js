@@ -1,6 +1,7 @@
 import React from 'react';
-import {withStyles, Typography, Avatar, Tooltip} from '@material-ui/core';
+import {withStyles, Typography, Avatar, Tooltip, TextField} from '@material-ui/core';
 import chatBoxStyle from '../styles/chatBox';
+import Settings from '../components/Settings'
 const firebase = require("firebase");
 
 class ChatBox extends React.Component{
@@ -8,7 +9,7 @@ class ChatBox extends React.Component{
         super();
         this.state = {
             name: null,
-            inital: null,
+            initial: null,
         }
     }
     componentDidMount = () =>{
@@ -36,7 +37,7 @@ class ChatBox extends React.Component{
                 .doc(user)
                 .get()
                 .then((doc) => {
-                    this.setState({name: doc.data().name, inital: doc.data().name.split('')[0]});
+                    this.setState({name: doc.data().name, initial: doc.data().name.split('')[0]});
                 }).catch(function(error) {
                     console.log("Error getting document:", error);
                 });
@@ -57,7 +58,6 @@ class ChatBox extends React.Component{
     
     messageDisplay = (message) => {
         const type = this.contentType(message)
-        //console.log({ type, message })
         switch (type){
             case 'image':
                 return <img src={message} alt = {message}/>
@@ -73,13 +73,12 @@ class ChatBox extends React.Component{
         const {classes} = this.props;
         if (this.props.chat === undefined){
             return (
-                <main id = 'chat-container' className = {classes.contentNoChat}><Typography component = 'h1' variant = 'h5'>
-                Welcome {this.props.name}</Typography></main>
+                <Settings name = {this.props.name} initial = {this.props.initial} nameChange = {this.props.nameChange} update = {this.props.update}/>
             );
         } else {
             return(
                 <div>
-                    <div className = {classes.chatHeader}><Avatar className = {classes.icon}>{this.state.inital}</Avatar>
+                    <div className = {classes.chatHeader}><Avatar className = {classes.icon}>{this.state.initial}</Avatar>
                     <Tooltip title = {this.props.chat.users.filter(user => user !== this.props.user)[0]} placement = "right">
                         <Typography component = 'h1' variant ='h5'>{this.state.name}</Typography></Tooltip></div>
                     <main id = 'chat-container' className = {classes.content}>

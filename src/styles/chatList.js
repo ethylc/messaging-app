@@ -6,8 +6,6 @@ const chatListStyle = theme => ({
       left: '0',
       width: '300px',
       boxShadow: '0px 0px 2px #303030',
-      overflowX:'hidden',
-      overflowY:'auto',
       [theme.breakpoints.down('sm')]: {
         width: '70px',
       },
@@ -31,6 +29,21 @@ const chatListStyle = theme => ({
     },
     text:{
       textOverflow: 'ellipsis'
+    },
+    bar: {
+      paddingTop:'8px',
+      width: '100%',
+      position: 'absolute',
+      textAlign: 'center'
+    },
+    list:{
+      overflowY:'auto',
+      overflowX:'hidden',
+      marginTop:'55px',
+      textAlign:'center',
+      [theme.breakpoints.down('sm')]: {
+        marginTop:'150px',
+      },
     }
   });
   

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, List, ListItem, ListItemText, ListItemAvatar, Avatar, 
     withStyles, Typography, Divider, Tooltip, Badge} from '@material-ui/core';
-import {CreateTwoTone, ExitToAppTwoTone, Mail} from '@material-ui/icons';
+import {CreateTwoTone, ExitToAppTwoTone, Mail, Settings} from '@material-ui/icons';
 import chatListStyle from '../styles/chatList';
 const firebase = require("firebase");
 
@@ -37,9 +37,12 @@ class ChatList extends React.Component{
         const {classes} = this.props;
         return(
             <main className = {classes.root}>
-                {/* <Typography component = 'h1' variant = 'h4' display ='inline'>Chats</Typography> */}
+                <div className = {classes.bar}>
                 <Tooltip title="Create new chat"><IconButton aria-label = 'create new chat' color = 'secondary' onClick = {this.newChat}><CreateTwoTone/></IconButton></Tooltip>
+                <Tooltip title="Settings"><IconButton aria-label = 'settings' color = 'secondary' onClick = {this.props.settings}><Settings/></IconButton></Tooltip>
                 <Tooltip title="Logout"><IconButton aria-label = 'logout' color = 'secondary' onClick = {this.logOut}><ExitToAppTwoTone/></IconButton></Tooltip>
+                </div>
+                <div className = {classes.list}>
                 {this.props.chats.length > 0 ? 
                 <List>
                     {
@@ -70,8 +73,9 @@ class ChatList extends React.Component{
                         })
                     }
                 </List>
+                
                 :<Typography component = 'h1' variant = 'h5'>No chats avaliable</Typography>}
-
+                </div>
             </main>
             );
     }

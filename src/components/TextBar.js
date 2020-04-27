@@ -1,6 +1,7 @@
 import React from 'react';
-import {TextField, withStyles} from '@material-ui/core'
+import {TextField, withStyles, ClickAwayListener} from '@material-ui/core'
 import {SendRounded, PhotoLibraryTwoTone, Gif} from '@material-ui/icons';
+import Sticker from '../components/Sticker'
 import textBarStyle from '../styles/textBar';
 const firebase = require("firebase");
 
@@ -9,6 +10,7 @@ class TextBar extends React.Component{
         super();
         this.state = {
             inputText: '',
+            sticker: false
         };
         this.imageFile = null
     }
@@ -42,7 +44,6 @@ class TextBar extends React.Component{
     onChoosePhoto = (e) => {
         if (e.target.files && e.target.files[0]) {
             this.currentPhotoFile = e.target.files[0]
-            // Check this file is an image?
             const prefixFiletype = e.target.files[0].type.toString()
             this.imageFile = e.target.files[0];
             if (prefixFiletype === '') {
@@ -64,17 +65,30 @@ class TextBar extends React.Component{
             }
         }
     }
+    chooseSticker = () => {
+        if (this.state.sticker === false){
+            this.setState({sticker: true})
+        } else {
+            this.setState({sticker: false})
+        }
+    }
+    close = () => {
+        this.setState({sticker: false})
+    }
     render() {
         const {classes} = this.props;
         return(
-            <div className = {classes.textBarContainer}>
-                <PhotoLibraryTwoTone className = {classes.imageBtn} onClick={() => this.refInput.click()}/>
-                <Gif className = {classes.imageBtn} onClick = {this.sendMsg}/>
-                <input ref={el => {this.refInput = el}} accept="image/*" className={classes.hide} type="file" onChange={this.onChoosePhoto}/>
-                <TextField className = {classes.textBar} multiline id = 'textbox'
-                rowsMax={4} placeholder="Type a message" color = 'secondary' InputProps={{ classes: {input: this.props.classes['input']}, disableUnderline: true }}
-                onKeyUp = {(e) => this.userInput(e)} onKeyDown ={(e) => this.noNewLine(e)} onFocus = {this.userRead}></TextField>
-                <SendRounded className = {classes.sendBtn} onClick = {this.sendMsg}/>
+            <div>
+                {this.state.sticker ? <ClickAwayListener onClickAway={this.close}><Sticker/></ClickAwayListener> : null}
+                <div className = {classes.textBarContainer}>
+                    <PhotoLibraryTwoTone className = {classes.imageBtn} onClick={() => this.refInput.click()}/>
+                    <Gif className = {classes.imageBtn} onClick = {this.chooseSticker}/>
+                    <input ref={el => {this.refInput = el}} accept="image/*" className={classes.hide} type="file" onChange={this.onChoosePhoto}/>
+                    <TextField className = {classes.textBar} multiline id = 'textbox'
+                    rowsMax={3} placeholder="Type a message" color = 'secondary' InputProps={{ classes: {input: this.props.classes['input']}, disableUnderline: true }}
+                    onKeyUp = {(e) => this.userInput(e)} onKeyDown ={(e) => this.noNewLine(e)} onFocus = {this.userRead}></TextField>
+                    <SendRounded className = {classes.sendBtn} onClick = {this.sendMsg}/>
+                </div>
             </div>
         )
     }

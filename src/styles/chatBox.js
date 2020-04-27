@@ -12,29 +12,14 @@ const chatBoxStyle = theme => ({
     }
   },
     content: {
-      height: 'calc(100% - 120px)',
+      height: 'calc(100% - 124px)',
       overflow: 'auto',
       padding: '25px',
       left: '300px',
       boxSizing: 'border-box',
-      top: '60px',
+      top: '63px',
       width: 'calc(100% - 300px)',
       position: 'absolute',
-      backgroundColor:'rgba(255, 255, 255, 0.2)',
-      [theme.breakpoints.down('sm')]: {
-        width: 'calc(100% - 70px)',
-        left: '70px',
-      },
-    },
-    contentNoChat: {
-      height: '100%',
-      overflow: 'auto',
-      padding: '25px',
-      left: '300px',
-      boxSizing: 'border-box',
-      width: 'calc(100% - 300px)',
-      position: 'absolute',
-      color:'white',
       backgroundColor:'rgba(255, 255, 255, 0.2)',
       [theme.breakpoints.down('sm')]: {
         width: 'calc(100% - 70px)',
@@ -111,7 +96,7 @@ const chatBoxStyle = theme => ({
   
     chatHeader: {
       width: 'calc(100% - 301px)',
-      height: '60px',
+      height: '63px',
       backgroundColor: 'rgba(255,255,255,0.3)',
       position: 'fixed',
       left: '300px',
@@ -130,9 +115,9 @@ const chatBoxStyle = theme => ({
       },
     },
     icon:{
-      marginTop:'-6px',
+      marginTop:'-4px',
       marginRight:'10px'
-    }
+    },
   
   });
   
