@@ -39,10 +39,12 @@ const chatListStyle = theme => ({
     list:{
       overflowY:'auto',
       overflowX:'hidden',
+      height:'calc(100% - 55px)',
       marginTop:'55px',
       textAlign:'center',
       [theme.breakpoints.down('sm')]: {
         marginTop:'150px',
+        height:'calc(100% - 150px)',
       },
     }
   });

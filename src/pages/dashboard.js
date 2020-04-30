@@ -18,7 +18,7 @@ class Dashboard extends React.Component{
             name: null,
             initial: null,
             chats:[],
-            names:[]
+            isLoading: true
         };
     }
     componentDidMount = () => {
@@ -36,7 +36,7 @@ class Dashboard extends React.Component{
                                       name: user.displayName,
                                       initial: user.displayName.split('')[0],
                                       chats: chats
-                                  });
+                                  }, () => this.setState({isLoading: false}));
                               })
             }
         })
@@ -117,7 +117,7 @@ class Dashboard extends React.Component{
     render(){
         return(
             <div>
-                <ChatList history = {this.props.history} newChatClick = {this.newChatButton} selectChat = {this.selectChat} 
+                <ChatList history = {this.props.history} newChatClick = {this.newChatButton} selectChat = {this.selectChat} loading = {this.state.isLoading}
                 chats = {this.state.chats} userEmail = {this.state.email} chatIndex = {this.state.selectedChat} settings = {this.settingsButton}/>
                 {this.state.addChat ? <NewChat goTo = {this.goToChat} addChat = {this.createChat}/> : this.state.settings ?
                 <Settings name = {this.state.name} initial = {this.state.initial} nameChange = {this.userInput} update = {this.updateProfile}/> :

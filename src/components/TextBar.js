@@ -10,7 +10,8 @@ class TextBar extends React.Component{
         super();
         this.state = {
             inputText: '',
-            sticker: false
+            sticker: false,
+            inputImg:''
         };
         this.imageFile = null
     }
@@ -41,6 +42,17 @@ class TextBar extends React.Component{
             document.getElementById('textbox').value = '';
         }
     }
+    sendImg = () => {
+        if (this.notEmpty(this.state.inputImg)){
+            this.props.send(this.state.inputImg);
+        }
+    }
+    chooseGif = (gif, e) => {
+        e.preventDefault();
+        this.setState({inputImg: gif.images.original.url}, 
+            () => this.sendImg())
+        
+    }
     onChoosePhoto = (e) => {
         if (e.target.files && e.target.files[0]) {
             this.currentPhotoFile = e.target.files[0]
@@ -58,8 +70,8 @@ class TextBar extends React.Component{
                 }, () => {
                   firebase.storage().ref('images').child(this.imageFile.name).getDownloadURL()
                    .then(fireBaseUrl => {
-                     this.setState({inputText: fireBaseUrl});
-                     this.sendMsg();
+                     this.setState({inputImg: fireBaseUrl});
+                     this.sendImg();
                    })
                 })
             }
@@ -79,7 +91,7 @@ class TextBar extends React.Component{
         const {classes} = this.props;
         return(
             <div>
-                {this.state.sticker ? <ClickAwayListener onClickAway={this.close}><Sticker/></ClickAwayListener> : null}
+                {this.state.sticker ? <ClickAwayListener onClickAway = {this.close}><Sticker sendGif = {this.chooseGif}/></ClickAwayListener> : null}
                 <div className = {classes.textBarContainer}>
                     <PhotoLibraryTwoTone className = {classes.imageBtn} onClick={() => this.refInput.click()}/>
                     <Gif className = {classes.imageBtn} onClick = {this.chooseSticker}/>

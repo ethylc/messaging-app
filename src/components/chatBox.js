@@ -13,21 +13,21 @@ class ChatBox extends React.Component{
         }
     }
     componentDidMount = () =>{
-        const container = document.getElementById('chat-container');
-        if (container){
-            container.scrollTo(0, container.scrollHeight);
-        }
+        this.bottomScroll();
         if (this.props.chat){
             this.getName();
         }
     }
-    componentDidUpdate = (prevProps, prevState) => {
+    componentDidUpdate = (prevProps) => {
+        this.bottomScroll();
+        if (prevProps.chat !== this.props.chat){
+            this.getName();
+        }
+    }
+    bottomScroll = () => {
         const container = document.getElementById('chat-container');
         if (container){
             container.scrollTo(0, container.scrollHeight);
-        }
-        if (prevProps.chat !== this.props.chat){
-            this.getName();
         }
     }
     getName = () => {

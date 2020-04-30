@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconButton, List, ListItem, ListItemText, ListItemAvatar, Avatar, 
-    withStyles, Typography, Divider, Tooltip, Badge} from '@material-ui/core';
+    withStyles, Typography, Divider, Tooltip, Badge, LinearProgress} from '@material-ui/core';
 import {CreateTwoTone, ExitToAppTwoTone, Mail, Settings} from '@material-ui/icons';
 import chatListStyle from '../styles/chatList';
 const firebase = require("firebase");
@@ -47,7 +47,7 @@ class ChatList extends React.Component{
                 <List>
                     {
                         this.props.chats.map((chat, index) => {
-                            return(
+                            return (
                                 <div key = {index}>
                                     <ListItem onClick = {() => this.selectChat(index)} 
                                     className = {classes.listItem} selected = {this.props.chatIndex === index}
@@ -61,11 +61,9 @@ class ChatList extends React.Component{
                                         <ListItemText className = {classes.itemText} primary = {chat.users.filter(user => user !== this.props.userEmail)[0]}
                                         secondary = {<React.Fragment><Typography className = {classes.text} component = 'span' variant = 'caption' color = 'textSecondary'>
                                             {chat.messages[chat.messages.length - 1].message.substring(0, 50)}
-                                            {/* {chat.messages[chat.messages.length - 1].time} */}
                                             </Typography></React.Fragment>}>
 
                                         </ListItemText>
-                                        {/* {chat.hasRead === false && !this.userSender(chat) ? <ListItemIcon><NotificationsActive/></ListItemIcon> : null} */}
                                     </ListItem>
                                     <Divider></Divider>
                                 </div>
@@ -73,8 +71,7 @@ class ChatList extends React.Component{
                         })
                     }
                 </List>
-                
-                :<Typography component = 'h1' variant = 'h5'>No chats avaliable</Typography>}
+                : this.props.loading ? <LinearProgress color="secondary"/> : <Typography component = 'h1' variant = 'h5'>No chats avaliable</Typography>}
                 </div>
             </main>
             );
