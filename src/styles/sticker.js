@@ -3,7 +3,7 @@ const stickerStyle = theme =>({
         position:'absolute',
         bottom:'80px',
         left: '340px',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
             left: '110px',
           },
     },

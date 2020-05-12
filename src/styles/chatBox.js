@@ -21,7 +21,7 @@ const chatBoxStyle = theme => ({
       width: 'calc(100% - 300px)',
       position: 'absolute',
       backgroundColor:'rgba(255, 255, 255, 0.2)',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         width: 'calc(100% - 70px)',
         left: '70px',
       },
@@ -109,7 +109,7 @@ const chatBoxStyle = theme => ({
       zIndex:'9',
       display:'flex',
       cursor:'default',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         width: 'calc(100% - 70px)',
         left: '70px',
       },

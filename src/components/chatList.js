@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, List, ListItem, ListItemText, ListItemAvatar, Avatar, 
-    withStyles, Typography, Divider, Tooltip, Badge, LinearProgress} from '@material-ui/core';
-import {CreateTwoTone, ExitToAppTwoTone, Mail, Settings} from '@material-ui/icons';
+    withStyles, Typography, Divider, Tooltip, Badge, LinearProgress, Icon} from '@material-ui/core';
+import {CreateTwoTone, ExitToAppTwoTone, Mail, Settings, SentimentDissatisfiedTwoTone} from '@material-ui/icons';
 import chatListStyle from '../styles/chatList';
 const firebase = require("firebase");
 
@@ -60,7 +60,7 @@ class ChatList extends React.Component{
                                         </ListItemAvatar>
                                         <ListItemText className = {classes.itemText} primary = {chat.users.filter(user => user !== this.props.userEmail)[0]}
                                         secondary = {<React.Fragment><Typography className = {classes.text} component = 'span' variant = 'caption' color = 'textSecondary'>
-                                            {chat.messages[chat.messages.length - 1].message.substring(0, 50)}
+                                            {chat.messages[chat.messages.length - 1].message.substring(0, 30)}
                                             </Typography></React.Fragment>}>
 
                                         </ListItemText>
@@ -71,7 +71,8 @@ class ChatList extends React.Component{
                         })
                     }
                 </List>
-                : this.props.loading ? <LinearProgress color="secondary"/> : <Typography component = 'h1' variant = 'h5'>No chats avaliable</Typography>}
+                : this.props.loading ? <LinearProgress color="secondary"/> : 
+                <div className = {classes.note}><Icon><SentimentDissatisfiedTwoTone className={classes.emoji}/></Icon><Typography component = 'h1' variant = 'h5'>No chats found</Typography></div>}
                 </div>
             </main>
             );

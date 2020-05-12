@@ -34,9 +34,8 @@ class Dashboard extends React.Component{
                                   await this.setState({
                                       email: user.email,
                                       name: user.displayName,
-                                      initial: user.displayName.split('')[0],
                                       chats: chats
-                                  }, () => this.setState({isLoading: false}));
+                                  }, () => this.setState({initial: user.displayName.split('')[0], isLoading: false}));
                               })
             }
         })

@@ -41,7 +41,7 @@ const textBarStyle = theme => ({
       width: 'calc(100% - 301px)',
       backgroundColor:'rgba(255, 255, 255, 0.2)',
       padding:'10px 10px 10px 20px',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         width: 'calc(100% - 70px)',
         left: '70px',
       },

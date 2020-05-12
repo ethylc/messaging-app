@@ -9,7 +9,7 @@ const settingsStyle = theme => ({
         position: 'absolute',
         color:'white',
         backgroundColor:'rgba(255, 255, 255, 0.2)',
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('xs')]: {
           width: 'calc(100% - 70px)',
           left: '70px',
         },

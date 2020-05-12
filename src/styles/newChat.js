@@ -16,7 +16,7 @@ const newChatStyle = theme => ({
       boxShadow: '0 2px 2px -2px #303030',
       zIndex:'9',
       display:'flex',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         width: 'calc(100% - 70px)',
         left: '70px',
       },

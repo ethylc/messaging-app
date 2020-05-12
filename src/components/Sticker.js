@@ -12,7 +12,8 @@ class Sticker extends React.Component {
         super();
         this.state = {
             search: '',
-            isEmpty: true
+            isEmpty: true,
+            swap: true
         }
         this.timer = null
     }
@@ -36,7 +37,11 @@ class Sticker extends React.Component {
         }, 1000);
     }
     sendRequest = (s) => {
-        this.setState({ search: s.trim() })
+        if (this.state.swap){
+            this.setState({swap: false, search: s.trim()})
+        } else {
+            this.setState({swap: true, search: s.trim()})
+        }
     }
     clear = () => {
         const field = document.getElementById('searchInput');
@@ -51,12 +56,13 @@ class Sticker extends React.Component {
                 <Card className = {classes.card}>
                     <TextField id = 'searchInput' InputProps = {{
                         className: classes.searchBar, startAdornment: (<InputAdornment position = "start"><Search color = 'inherit'/></InputAdornment>), 
-                            endAdornment:(this.state.isEmpty ? null : <IconButton onClick = {this.clear} classes = {{root: classes.close}}><Close fontSize='small'/></IconButton>)
+                            endAdornment:(this.state.isEmpty ? null : <IconButton onClick = {this.clear} classes = {{root: classes.close}}><Close/></IconButton>)
                     }} placeholder = "Search GIFs" color = 'secondary' onChange = {(e) => this.userInput(e)} />
                     <div className = {classes.container}>
                         {this.state.search === '' ? 
-                        <Grid key = 'trending' width = {230} columns = {1} hideAttribution = {true} fetchGifs = {this.fetchGifs} onGifClick = {this.props.sendGif} /> : 
-                        <Grid key = 'search' width = {230} columns = {1} hideAttribution = {true} fetchGifs = {this.searchGifs(this.state.search)} onGifClick = {this.props.sendGif} />}
+                        <Grid key = 'trending' width = {230} columns = {1} hideAttribution = {true} fetchGifs = {this.fetchGifs} onGifClick = {this.props.sendGif} /> : this.state.swap ?
+                        <Grid key = 'search1' width = {230} columns = {1} hideAttribution = {true} fetchGifs = {this.searchGifs(this.state.search)} onGifClick = {this.props.sendGif} /> :
+                        <Grid key = 'search2' width = {230} columns = {1} hideAttribution = {true} fetchGifs = {this.searchGifs(this.state.search)} onGifClick = {this.props.sendGif}/>}
                         
                     </div>
                 </Card>

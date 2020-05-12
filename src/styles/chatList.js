@@ -6,7 +6,7 @@ const chatListStyle = theme => ({
       left: '0',
       width: '300px',
       boxShadow: '0px 0px 2px #303030',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         width: '70px',
       },
     },
@@ -30,6 +30,16 @@ const chatListStyle = theme => ({
     text:{
       textOverflow: 'ellipsis'
     },
+    note:{
+      marginTop:'30%',
+      color:'grey'
+    },
+    emoji:{
+      fontSize:'65px',
+      [theme.breakpoints.down('xs')]: {
+        fontSize:'40px',
+      },
+    },
     bar: {
       paddingTop:'8px',
       width: '100%',
@@ -42,7 +52,7 @@ const chatListStyle = theme => ({
       height:'calc(100% - 55px)',
       marginTop:'55px',
       textAlign:'center',
-      [theme.breakpoints.down('sm')]: {
+      [theme.breakpoints.down('xs')]: {
         marginTop:'150px',
         height:'calc(100% - 150px)',
       },

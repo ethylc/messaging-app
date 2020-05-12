@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles, Typography, Avatar, Tooltip, TextField} from '@material-ui/core';
+import {withStyles, Typography, Avatar, Tooltip} from '@material-ui/core';
 import chatBoxStyle from '../styles/chatBox';
 import Settings from '../components/Settings'
 const firebase = require("firebase");
@@ -83,15 +83,14 @@ class ChatBox extends React.Component{
                         <Typography component = 'h1' variant ='h5'>{this.state.name}</Typography></Tooltip></div>
                     <main id = 'chat-container' className = {classes.content}>
                         {this.props.chat.messages.map((msg, index) => {
-                            return(
+                            return (
                                 <Tooltip key = {index} title = {msg.time} placement = {msg.sender === this.props.user ? "left" : "right"}>
                                     <div key = {index} className = {msg.sender === this.props.user ? classes.userSent : classes.friendSent}>
                                         
                                     {this.contentType(msg.message) === 'string' ? msg.message : this.contentType(msg.message) === 'image' ? 
-                                    <img src={msg.message} alt = {msg.message}/> : <a href = {msg.message} target = "_blank" rel = "noopener noreferrer">{msg.message}</a>}
+                                    <img src = {msg.message} alt = {msg.message}/> : <a href = {msg.message} target = "_blank" rel = "noopener noreferrer">{msg.message}</a>}
                                 </div></Tooltip>
-                            )
-                        }
+                            )}
                         )}    
                     </main>
                 </div>
